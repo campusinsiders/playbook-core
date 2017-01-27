@@ -7,7 +7,8 @@ machine:
 dependencies:
   pre:
     - sudo apt-get update; sudo apt-get install subversion
-    - composer config --file ./ci.composer.json
+  override:
+    - composer update --no-plugins --no-interaction
 
 test:
   pre:
