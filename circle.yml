@@ -7,6 +7,7 @@ machine:
 dependencies:
   pre:
     - sudo apt-get update; sudo apt-get install subversion
+    - composer config --file ./ci.composer.json
 
 test:
   pre:
