@@ -11,3 +11,5 @@
  *
  * @package         Playbook_Core
  */
+
+namespace Lift\Playbook\Core;
