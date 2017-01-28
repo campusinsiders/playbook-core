@@ -22,6 +22,10 @@
       {
         "type": "vcs",
         "url": "git@github.com:liftux/plugins-core.git"
+      },
+      {
+        "type": "vcs",
+        "url": "git@github.com:christianc1/wp_mock.git"
       }
     ],
   "require":{
@@ -30,6 +34,7 @@
     "liftux/liftux-core": "dev-php7"
   },
   "require-dev": {
+    "10up/wp_mock": "dev-dev"
   },
   "autoload": {
     "classmap": [ "src/"]

@@ -1,14 +1,35 @@
 <phpunit
-	bootstrap="tests/bootstrap.php"
-	backupGlobals="false"
-	colors="true"
-	convertErrorsToExceptions="true"
-	convertNoticesToExceptions="true"
-	convertWarningsToExceptions="true"
-	>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.5/phpunit.xsd"
+  bootstrap="tests/unit/bootstrap.php"
+  verbose="true"
+  colors="true"
+  convertErrorsToExceptions="true"
+  convertNoticesToExceptions="true"
+  convertWarningsToExceptions="true"
+  strict="true"
+  stopOnFailure="false">
 	<testsuites>
-		<testsuite>
-			<directory prefix="test-" suffix=".php">./tests/</directory>
+		<testsuite name="UI">
+			<directory>tests/unit/classes/ui</directory>
+			<directory>tests/unit/traits/ui</directory>
+		</testsuite>
+		<testsuite name="Classes">
+			<directory>tests/unit/classes</directory>
+		</testsuite>
+		<testsuite name="Utils">
+			<directory>tests/unit/tests/UI/Utils</directory>
 		</testsuite>
 	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">src/</directory>
+			<exclude>
+				<directory suffix="Renderer.php">dist/app/UI</directory>
+			</exclude>
+		</whitelist>
+	</filter>
+	<logging>
+		<log type="coverage-html" target="coverage" />
+	</logging>
 </phpunit>
