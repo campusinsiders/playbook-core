@@ -17,4 +17,4 @@ test:
       composer global require wp-coding-standards/wpcs
       phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
   override:
-    - phpcs --standard=phpcs.ruleset.xml $(find . -name '*.php')
+    - phpcs --standard=phpcs.ruleset.xml $(find ./src -name '*.php')
