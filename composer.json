@@ -31,7 +31,7 @@
   "require":{
     "php": ">=5.6",
     "composer/installers": "v1.*",
-    "liftux/liftux-core": "dev-php7"
+    "liftux/plugins-core": "dev-php7"
   },
   "require-dev": {
     "10up/wp_mock": "dev-dev"
