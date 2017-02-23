@@ -8,7 +8,6 @@
  */
 
 namespace Lift\Playbook;
-use Lift\Core\Dependency_Injector;
 use Lift\Playbook\Interfaces\Template_Factory_Interface;
 
 /**
@@ -50,7 +49,7 @@ final class Factory_Map {
 	 */
 	public function register_factory( string $reference, Template_Factory_Interface $class ) : Factory_Map {
 		if ( ! in_array( $reference, $this->list_refs(), true ) ) {
-			array_push( $this->factories, new FactoryDefinition( $reference, $class ) );
+			array_push( $this->factories, new Factory_Definition( $reference, $class ) );
 		} else {
 			$this->replace_factory( $reference, $class );
 		}

@@ -124,3 +124,5 @@ class Example_Factory extends Template_Factory implements Template_Factory_Inter
 		return new Example_Component( $attributes );
 	}
 }
+
+class Example2_Factory extends Example_Factory {};

@@ -134,5 +134,5 @@ abstract class Template_Factory implements Template_Factory_Interface {
 	 * @access  private
 	 * @return  void 	Private no op.
 	 */
-	private function __wakeup() {}
+	//private function __wakeup() {}
 }

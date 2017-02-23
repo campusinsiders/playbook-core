@@ -4,7 +4,7 @@
  *
  * @package  Lift\Playbook\Tests
  */
-use Lift\Playbook\UI\Utils\Playbook_Demo;
+use Lift\Playbook\Playbook_Demo;
 use Lift\Playbook\UI\Components\Example_Component;
 use Lift\Playbook\Playbook_Render_Exception;
 
@@ -144,7 +144,7 @@ class Playbook_DemoTest extends \PHPUnit_Framework_Testcase {
 		$demo = new Example_Component();
 
 		\WP_Mock::userFunction( 'locate_template', array(
-			'times' => 1,
+			'times' => 2,
 			//'args' => Example_Component::$renderer,
 			'return' => ''
 			));

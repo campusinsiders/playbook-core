@@ -10,6 +10,7 @@
 namespace Lift\Playbook\UI;
 use Lift\Playbook\Playbook_Render_Exception;
 use Lift\Playbook\UI\Data_Value;
+use Lift\Core\Interfaces\File_Loader;
 
 /**
  * Class: Base Template
@@ -29,16 +30,30 @@ abstract class Base_Template {
 	static $renderer;
 
 	/**
+	 * File Loader
+	 *
+	 * @since v2.0.0
+	 * @var File_Loader
+	 */
+	public $file_loader;
+
+	/**
 	 * Constructor
 	 *
 	 * @since v2.0.0
-	 * @param Array|array $attributes An array of attributes, set in child constructors.
-	 * @return  Base_Template		  Instance of this with filled properties
+	 * @param Array|array      $attributes  An array of attributes, set in child constructors.
+	 * @param File_Loader|null $file_loader An instance of a File_Loader interface.
+	 * @return  Base_Template		        Instance of this with filled properties
 	 */
-	public function __construct( array $attributes = [] ) {
+	public function __construct( array $attributes = [], File_Loader $file_loader = null ) {
 		foreach ( get_object_vars( $this ) as $prop => $value ) {
 			$this->$prop = new Data_Value( $prop, $value );
 		}
+
+		if ( $file_loader ) {
+			$this->file_loader = $file_loader;
+		}
+
 		return $this->apply( $attributes );
 	}
 

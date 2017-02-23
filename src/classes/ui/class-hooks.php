@@ -36,10 +36,10 @@ class Hooks {
 	 * ```
 	 *
 	 * @since  v2.0.0
-	 * @param  string $tag   The name of the filter.
-	 * @param  mixed  $value  The value on which the filters hooked to $tag are applied on.
-	 * @param  mixed  $args   Additional variables passed to the functions hooked to $tag.
-	 * @return mixed         The filtered value after all hooked functions are applied to
+	 * @param  string $tag     The name of the filter.
+	 * @param  mixed  $value   The value on which the filters hooked to $tag are applied on.
+	 * @param  mixed  ...$args Additional variables passed to the functions hooked to $tag.
+	 * @return mixed           The filtered value after all hooked functions are applied to
 	 */
 	public static function apply_filters( string $tag, $value, ...$args ) {
 		if ( ! function_exists( '\apply_filters' ) ) {
@@ -59,8 +59,8 @@ class Hooks {
 	 * can be mocked without have to define the actual action inside of a test suite.
 	 *
 	 * @since  v2.0.0
-	 * @param  string $tag  The name of the action to be executed.
-	 * @param  mixed  $args Additional arguments which are passed on to the hooked functions.
+	 * @param  string $tag     The name of the action to be executed.
+	 * @param  mixed  ...$args Additional arguments which are passed on to the hooked functions.
 	 * @return void
 	 */
 	public static function do_action( string $tag, ...$args ) {

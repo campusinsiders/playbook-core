@@ -204,6 +204,39 @@ class Data_Value {
 	}
 
 	/**
+	 * When
+	 *
+	 * When the value is strictly equal to the provided condition, will return the return
+	 * value of the provided callback.
+	 *
+	 * @since  v2.0.0
+	 * @param  mixed    $condition Something to compare the value with.
+	 * @param  callable $callback  Callable function that returns something, passed $this.
+	 * @param  mixed    ...$args   Variadic arguments.
+	 * @return mixed|null          Return value of the callback when fired, null otherwise.
+	 */
+	public function when( $condition, callable $callback, ...$args ) {
+		if ( $this->get() === $condition ) {
+			return $callback( $this, $args );
+		}
+		return null;
+	}
+
+	/**
+	 * Bind to
+	 *
+	 * Passes $this Data_Value as the first argument to the provided callable.
+	 *
+	 * @since  v2.0.0
+	 * @param  callable $callback Callback function that accepts parameters.
+	 * @param  mixed    ...$args  Variadic arguments.
+	 * @return mixed              Return value of callback.
+	 */
+	public function bind_to( callable $callback, ...$args ) {
+		return call_user_func( $callback, $this, $args );
+	}
+
+	/**
 	 * Magic __call
 	 *
 	 * @since v2.0.0

@@ -96,4 +96,18 @@ trait String_Utils {
 
 		return ( strpos( $haystack, $needle ) === false ) ? false : true;
 	}
+
+	/**
+	 * Validate URL
+	 *
+	 * @since  v2.0.0
+	 * @param  string|null $text Text to validate as url.
+	 * @return bool              True if valid url, false otherwise
+	 */
+	public function validate_url( string $text = null ) : bool {
+		if ( is_null( $text ) && is_a( $this, Data_Value::class ) ) {
+			$text = $this->get();
+		}
+		return ( false !== filter_var( $text, FILTER_VALIDATE_URL ) );
+	}
 }

@@ -37,6 +37,7 @@
     "10up/wp_mock": "dev-dev"
   },
   "autoload": {
-    "classmap": [ "src/"]
+    "classmap": [ "src/" ],
+    "files": [ "src/functions/global-alias-functions.php" ]
   }
 }

@@ -6,7 +6,7 @@
  * @since  v2.0.0
  */
 
-namespace Lift\Playbook\UI\Utils;
+namespace Lift\Playbook;
 use Lift\Playbook\UI\Base_Template;
 use Lift\Playbook\Playbook_Render_Exception;
 
@@ -155,7 +155,7 @@ class Playbook_Demo {
 		?>
 		<div class="showcase-component">
 			<h1 class="showcase-component--header">
-				<?php echo esc_html( $this->get_class_name() ); ?>
+				<?php echo esc_html( str_replace( '_', ' ', $this->get_class_name() ) ); ?>
 
 				<?php if ( ! empty( $badges ) ) : ?>
 				<span class="showcase-component--header-badges">
@@ -265,8 +265,8 @@ class Playbook_Demo {
 	 *
 	 * @since v2.0.0
 	 * @param Base_Template $template The component or module to demo.
-	 * @param string       $title    The title of the section.
-	 * @return Playbook_Demo     self
+	 * @param string        $title    The title of the section.
+	 * @return Playbook_Demo          self
 	 */
 	public function add_demo( Base_Template $template, string $title = '' ) : Playbook_Demo {
 		if ( ! $this->ensure() ) {
@@ -282,7 +282,7 @@ class Playbook_Demo {
 				</h3>
 
 				<div class="<?php echo esc_attr( $class_base ) . '--template'; ?>">
-					<?php echo wp_kses_post( $template ); ?>
+					<?php echo $template; ?>
 				</div>
 
 			</div>

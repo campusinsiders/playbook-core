@@ -80,7 +80,7 @@ class Base_Template_Test extends \PHPUnit_Framework_Testcase {
 	}
 
 	public function test_render() {
-		$expected_file = TESTDIR . '/helpers/Example_Component/Example_Component_Rendered.html';
+		$expected_file = TESTDIR . '/unit/helpers/Example_Component/Example_Component_Rendered.html';
 		$this->class->apply( $this->values );
 
 		\WP_Mock::userFunction( 'locate_template', array(
