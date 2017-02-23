@@ -18,6 +18,7 @@
       "homepage": "https://github.com/liftux/plugins-core/graphs/contributors"
     }
   ],
+  "minimum-stability": "dev",
   "repositories": [
       {
         "type": "vcs",
