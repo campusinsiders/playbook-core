@@ -18,6 +18,8 @@ use Lift\Playbook\Playbook;
 use Lift\Playbook\Factory_Map;
 use Lift\Core\Hook_Catalog;
 
+define( 'PLAYBOOK_CORE_PATH', dirname( __FILE__ ) );
+
 require_once plugin_dir_path( __FILE__ ) . '/src/functions/global-alias-functions.php';
 
 global $playbook;

@@ -47,6 +47,9 @@ class Playbook {
 		// Add registry hook.
 		$this->add_register_hook();
 
+		// Add rewrite hook.
+		$this->add_rewrite_hook();
+
 		// Inform WordPress that Playbook is ready.
 		do_action( 'playbook_loaded', $this );
 
@@ -107,6 +110,78 @@ class Playbook {
 	public function register_hook() {
 		do_action( 'playbook_register', $this );
 		return $this;
+	}
+
+	/**
+	 * Add Rewrite Hook
+	 *
+	 * Registers the hooks to functions that handle adding Playbook Demos to a site.
+	 *
+	 * @since  v2.0.0
+	 * @return  Playbook Instance of self.
+	 */
+	public function add_rewrite_hook() {
+		$rewrite = new Hook_Definition( 'init', array( $this, 'create_rewrite_rules' ), 10 );
+		$this->get_hook_catalog()->add_entry( $rewrite );
+
+		$template = new Hook_Definition( 'template_include', array( $this, 'get_demo_template' ) );
+		$this->get_hook_catalog()->add_entry( $template );
+
+		return $this;
+	}
+
+	/**
+	 * Create Rewrite Rules
+	 *
+	 * Creates the rewrite rules that match requests to Playbook demos.
+	 *
+	 * @since  v2.0.0
+	 * @return void
+	 */
+	public function create_rewrite_rules() {
+		global $wp;
+		$wp->add_query_var( 'playbook_component' );
+		add_rewrite_rule( '^playbook/([^/]+)/?$', 'index.php?playbook_component=$matches[1]', 'top' );
+		add_rewrite_endpoint( 'playbook_factory', EP_PERMALINK | EP_PAGES );
+		flush_rewrite_rules( false );
+	}
+
+	/**
+	 * Get Demo Template
+	 *
+	 * If the current route is to a Playbook Demo, this function will get the correct template
+	 * for showing the template.  This will be either a theme file, another plugin file, or the
+	 * file included with Playbook Core.
+	 *
+	 * @since  v2.0.0
+	 * @param  string|null $original_template The original template that would have been shown.
+	 * @return string                         The template that should be shown.
+	 */
+	public function get_demo_template( string $original_template = null ) : string {
+		if ( $comp = get_query_var( 'playbook_component' ) ) {
+			$theme = locate_template( [ 'playbook-demo-' . $comp . '.php', 'playbook-demo.php' ] );
+			return ( '' !== $theme )
+				? apply_filters( 'playbook_demo_template_include', $theme )
+				: $this->get_demo_template_path();
+		}
+
+		if ( $factory = get_query_var( 'playbook_factory' ) ) {
+			$theme = locate_template( [ 'playbook-demo-' . $factory . '.php', 'playbook-demo.php' ] );
+			return ( '' !== $theme )
+				? apply_filters( 'playbook_demo_template_include', $theme )
+				: $this->get_demo_template_path();
+		}
+		return $original_template;
+	}
+
+	/**
+	 * Get Demo Template Path
+	 *
+	 * @since  v2.0.0
+	 * @return string The path to the plugin demo template.
+	 */
+	public function get_demo_template_path() : string {
+		return  PLAYBOOK_CORE_PATH . '/includes/playbook-demo.php';
 	}
 
 	/**
