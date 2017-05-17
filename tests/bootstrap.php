@@ -5,6 +5,11 @@
  * @package Playbook_Core
  */
 
+// PHPUnit Upgrade Compatibility
+if ( ! class_exists( 'PHPUnit_Framework_Testcase' ) ) {
+	class PHPUnit_Framework_Testcase extends PHPUnit\Framework\TestCase {}
+}
+
 // Constants
 define( 'ROOTDIR', dirname( dirname( __FILE__ ) ) );
 define( 'APPDIR', ROOTDIR . '/src/app/');

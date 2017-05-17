@@ -2,7 +2,7 @@
 /**
  * Playbook Bootstrapper
  */
-namespace Playbook;
+namespace Old_Playbook;
 
 class Core {
 

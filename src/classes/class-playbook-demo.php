@@ -113,7 +113,7 @@ class Playbook_Demo {
 	 */
 	public function get_docs_link() : string {
 		$file_name = str_replace( '\\', '.', $this->reflection->getName() );
-		$root = rtrim( \Playbook\Core::$rel_path, '/dist' );
+		$root = dirname( dirname( dirname( __FILE__ ) ) );
 		return $root . '/docs/classes/' . $file_name . '.html';
 	}
 
@@ -135,9 +135,8 @@ class Playbook_Demo {
 	 */
 	public function get_coverage_link() : string {
 		$abs_path = $this->reflection->getFileName();
-		$root_dir = \Playbook\Core::$root_dir;
-		$root = rtrim( \Playbook\Core::$rel_path, '/dist' );
-		$path = ltrim( $abs_path, $root_dir . 'UI' );
+		$root = dirname( dirname( dirname( __FILE__ ) ) );
+		$path = ltrim( $abs_path, $root . 'UI' );
 		return $root . '/coverage/' . $path . '.html';
 	}
 

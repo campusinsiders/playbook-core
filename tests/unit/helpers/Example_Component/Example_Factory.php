@@ -7,8 +7,9 @@
  */
 namespace Lift\Playbook\UI\Factories;
 use Lift\Playbook\UI\Base_Template;
-use Lift\Playbook\UI\Template_Factory;
-use Lift\Playbook\Interfaces\Template_Factory_Interface;
+use Lift\Playbook\UI\Base_Template_Factory;
+use Lift\Playbook\Interfaces\Template_Factory;
+use Lift\Playbook\Interfaces\Template;
 use Lift\Playbook\UI\Featured_Media_Utils;
 use Lift\Playbook\UI\Post_Utils;
 use Lift\Playbook\UI\Hooks;
@@ -21,12 +22,12 @@ use Lift\Playbook\UI\Components\Example_Component;
  *
  * @uses Lift\Playbook\UI\Featured_Media_Utils
  * @uses Lift\Playbook\UI\Post_Utils
- * @see  Lift\Playbook\UI\Template_Factory
+ * @see  Lift\Playbook\UI\Base_Template_Factory
  * @see  Lift\Playbook\UI|Utils\Featured_Media_Utils
  * @see  Lift\Playbook\UI\Post_Utils
  * @see  Lift\Playbook\UI\Components\Example_Component
  */
-class Example_Factory extends Template_Factory implements Template_Factory_Interface {
+class Example_Factory extends Base_Template_Factory implements Template_Factory {
 	use Featured_Media_Utils;
 	use Post_Utils;
 
@@ -36,7 +37,7 @@ class Example_Factory extends Template_Factory implements Template_Factory_Inter
 	 * @param  array $attributes   An array of attributes
 	 * @return Example_Component A Example_Component
 	 */
-	public static function create( array $attributes = array() ) : Base_Template {
+	public static function create( array $attributes = array() ) : Template {
 		return new Example_Component( $attributes );
 	}
 
@@ -47,7 +48,7 @@ class Example_Factory extends Template_Factory implements Template_Factory_Inter
 	 * @param  array    $attributes Default attributes
 	 * @return Example_Component     Example_Component object
 	 */
-	public static function wp_post( \WP_Post $post, array $attributes = array() ) : Base_Template {
+	public static function wp_post( \WP_Post $post, array $attributes = array() ) : Template {
 		$o = new \stdClass();
 		$o->title = $post->post_title;
 		$o->content = $post->post_content;
@@ -76,7 +77,7 @@ class Example_Factory extends Template_Factory implements Template_Factory_Inter
 	 * @param  array    $attributes Default attributes
 	 * @return Example_Component     Example_Component object
 	 */
-	public static function wp_term( \WP_Term $term, array $attributes = array() ) : Base_Template {
+	public static function wp_term( \WP_Term $term, array $attributes = array() ) : Template {
 		$o = new \stdClass();
 		$o->name = $term->name;
 		$o->description = $term->description;
@@ -105,7 +106,7 @@ class Example_Factory extends Template_Factory implements Template_Factory_Inter
 	 * @param  array    $attributes Default attributes
 	 * @return Example_Component     Example_Component object
 	 */
-	public static function wp_user( \WP_User $user, array $attributes = array() ) : Base_Template {
+	public static function wp_user( \WP_User $user, array $attributes = array() ) : Template {
 		/**
 		 * Filter: playbook\create_post_excerpt_component
 		 *

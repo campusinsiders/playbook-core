@@ -2,7 +2,7 @@
 /**
  * Data Value
  *
- * Defines the Lift\Playbook\UI|Data_Value class, which all template attributes should
+ * Defines the Lift\Playbook\UI|Base_Attribute class, which all template attributes should
  * instantiate as their corresponding class properties.
  *
  * @since  v2.0.0
@@ -12,19 +12,18 @@
 
 namespace Lift\Playbook\UI;
 use Lift\Playbook\Playbook_Strict_Type_Exception;
+use Lift\Playbook\Interfaces\Attribute;
 
 /**
- * Class: Data_Value
+ * Class: Base_Attribute
  *
- * Each template attribute is instantiated as an instance of the Data_Value class.
+ * Each template attribute is instantiated as an instance of the Base_Attribute class.
  * This allows us shortcuts to transforming and filtering data, as well as some of
  * the value utilities, like DateTime and quick decoding JSON to Object operations.
  *
  * @since  v2.0.0
  */
-class Data_Value {
-	use String_Utils;
-
+class Base_Attribute implements Attribute {
 	/**
 	 * Name of a value, used to access value from public
 	 *
@@ -34,7 +33,7 @@ class Data_Value {
 	public $name;
 
 	/**
-	 * The stored immunatable value
+	 * The stored value
 	 *
 	 * @since v2.0.0
 	 * @var mixed
@@ -42,18 +41,18 @@ class Data_Value {
 	public $value;
 
 	/**
-	 * The value type, strict when strict_mode is (bool) true
+	 * The value type, strict when use_strict is (bool) true
 	 *
 	 * @since v2.0.0
 	 * @var string
 	 */
-	protected $type;
+	public $type;
 
 	/**
-	 * Strict mode will throw a Playbook_Strict_Type_Exception if the type value mutates
+	 * Use strict
 	 *
-	 * @since  v2.0.0
-	 * @var  boolean
+	 * @since v2.0.0
+	 * @var bool
 	 */
 	public $use_strict = false;
 
@@ -61,14 +60,14 @@ class Data_Value {
 	 * Constructor
 	 *
 	 * @since v2.0.0
-	 * @param String $name  The name of the Data_Value.
+	 * @param String $name  The name of the Base_Attribute.
 	 * @param mixed  $value The immutable value.
-	 * @return Data_Value   $this
+	 * @return Attribute   $this
 	 */
 	public function __construct( string $name, $value ) {
 		$this->name = $name;
 		$this->value = $value;
-		$this->type = $this->type();
+		$this->use_strict = ( defined( 'WP_DEUBG' ) && WP_DEBUG ) ? true : false;
 		return $this;
 	}
 
@@ -76,14 +75,15 @@ class Data_Value {
 	 * Set
 	 *
 	 * @since v2.0.0
-	 * @param mixed 	  $value An immutable value.
-	 * @param String|Null $type  The value type.
-	 * @return  Data_Value       $this
+	 * @param mixed $value    An immutable value.
+	 * @return Base_Attribute $this
 	 */
-	public function set( $value, $type = null ) : Data_Value {
-		$type = ! is_null( $type ) ? $type : gettype( $value );
-		$this->value = $this->ensure( $value, $type );
-		return $this;
+	public function set( $value ) : Attribute {
+		if ( $this->is_valid( $value ) ) {
+			$this->value = $value;
+			return $this;
+		}
+		return Attribute_Factory::create( $this->name, $value );
 	}
 
 	/**
@@ -120,17 +120,13 @@ class Data_Value {
 	}
 
 	/**
-	 * Type
+	 * Is Valid
 	 *
-	 * @since v2.0.0
-	 * @param  String|Null $type String representation of the value's type or null.
-	 * @return string            The type of the value
+	 * @param mixed $value The value to ensure validity.
+	 * @return bool
 	 */
-	public function type( $type = null ) : string {
-		if ( ! is_null( $type ) ) {
-			return $this->type = (string) $type;
-		}
-		return $this->type = gettype( $this->value );
+	public function is_valid( $value ) {
+		return true;
 	}
 
 	/**
@@ -139,9 +135,9 @@ class Data_Value {
 	 * @since v2.0.0
 	 * @param  String      $filter   WordPress Filter to pass value through.
 	 * @param  Array|array $args     An array of arguments to pass to the callable function.
-	 * @return Data_Value            A (clone) of $this instance with a new filtered value
+	 * @return Attribute            A (clone) of $this instance with a new filtered value
 	 */
-	public function filter( string $filter, array $args = [] ) : Data_Value {
+	public function filter( string $filter, array $args = [] ) : Attribute {
 		$clone = clone $this;
 		return $clone->set( apply_filters( $filter, $this->get(), $args ) );
 	}
@@ -151,9 +147,9 @@ class Data_Value {
 	 *
 	 * @since v2.0.0
 	 * @param  String $thing  String representation of a transform.
-	 * @return Data_Value     A new Datavalue with a tranfomed value, or the current Datavalue
+	 * @return Attribute     A new Datavalue with a tranfomed value, or the current Datavalue
 	 */
-	public function transform( string $thing ) : Data_Value {
+	public function transform( string $thing ) : Attribute {
 		switch ( $thing ) {
 			case 'datetime':
 				return new self( $this->name, $this->to_datetime( $this->get() ) );
@@ -164,43 +160,6 @@ class Data_Value {
 			default :
 				return $this;
 		}
-	}
-
-	/**
-	 * Ensure
-	 *
-	 * @since v2.0.0
-	 * @throws Playbook_Strict_Type_Exception Thrown if type is changed and strict mode is on.
-	 * @param  mixed  $value  The value to ensure the type of.
-	 * @param  string $type  A string representation of the type to ensure the value is.
-	 * @return mixed         The value with type ensured
-	 */
-	private function ensure( $value, string $type ) {
-		// If type is null, straight pass through as this is an initial set.
-		if ( 'NULL' === $type ) {
-			return $value;
-		}
-
-		// If we're in strict mode, ensure the type hasn't changed.
-		if ( $this->use_strict ) {
-			if ( $type === $this->type ) {
-				return $value;
-			}
-			throw new Playbook_Strict_Type_Exception( "$this->name mutated from $this->type to $type" );
-		}
-
-		// In not strict mode, pass value through a callback to help ensure the correct type.
-		$sanitizations = [
-			'string' => 'strval',
-			'integer' => 'intval',
-			'double' => 'floatval',
-			'boolean' => 'boolval',
-			'array' => function( $value ) { return (array) $value; },
-			'object' => function( $value ) { return (object) $value; },
-			'NULL' => function() { return null; },
-		];
-
-		return call_user_func( $sanitizations[ $type ], $value );
 	}
 
 	/**
@@ -225,7 +184,7 @@ class Data_Value {
 	/**
 	 * Bind to
 	 *
-	 * Passes $this Data_Value as the first argument to the provided callable.
+	 * Passes $this Base_Attribute as the first argument to the provided callable.
 	 *
 	 * @since  v2.0.0
 	 * @param  callable $callback Callback function that accepts parameters.
@@ -242,9 +201,9 @@ class Data_Value {
 	 * @since v2.0.0
 	 * @param  string $method  In this case, the WordPress filter to pass the value to.
 	 * @param  array  $args    An array of agrument to pass to the filter.
-	 * @return Data_Value      A (clone) of $this instance with a new filtered value
+	 * @return Attribute      A (clone) of $this instance with a new filtered value
 	 */
-	public function __call( string $method, $args ) : Data_Value {
+	public function __call( string $method, $args ) : Attribute {
 		return $this->filter( $method, $args );
 	}
 

@@ -8,7 +8,7 @@
  */
 
 namespace Lift\Playbook;
-use Lift\Playbook\Interfaces\Template_Factory_Interface;
+use Lift\Playbook\Interfaces\Template_Factory;
 
 /**
  * Class: Factory_Definition
@@ -26,7 +26,7 @@ final class Factory_Definition {
 	/**
 	 * Class
 	 *
-	 * @var Template_Factory_Interface Class to use as the Factory
+	 * @var Template_Factory Class to use as the Factory
 	 */
 	public $class;
 
@@ -35,9 +35,9 @@ final class Factory_Definition {
 	 *
 	 * @since  v2.0.0
 	 * @param string                     $reference String reference to the Factory.
-	 * @param Template_Factory_Interface $class     Factory to use, identified by $reference.
+	 * @param Template_Factory $class     Factory to use, identified by $reference.
 	 */
-	public function __construct( string $reference, Template_Factory_Interface $class ) {
+	public function __construct( string $reference, Template_Factory $class ) {
 		$this->reference = $reference;
 		$this->class = $class;
 		return $this;
@@ -46,9 +46,9 @@ final class Factory_Definition {
 	/**
 	 * Set Class
 	 *
-	 * @param Template_Factory_Interface $class Factory to use.
+	 * @param Template_Factory $class Factory to use.
 	 */
-	public function set( Template_Factory_Interface $class ) : Factory_Definition {
+	public function set( Template_Factory $class ) : Factory_Definition {
 		$this->class = $class;
 		return $this;
 	}
@@ -56,9 +56,9 @@ final class Factory_Definition {
 	/**
 	 * Magic: Invoke
 	 *
-	 * @return Template_Factory_Interface Instance of the factory
+	 * @return Template_Factory Instance of the factory
 	 */
-	public function __invoke() : Template_Factory_Interface {
+	public function __invoke() : Template_Factory {
 		return $this->class;
 	}
 }

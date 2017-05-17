@@ -7,7 +7,7 @@
  */
 
 namespace Lift\Playbook\UI;
-use Lift\Playbook\UI\Data_Value;
+use Lift\Playbook\Interfaces\Attribute;
 
 /**
  * Trait: String Utils
@@ -25,7 +25,7 @@ trait String_Utils {
 	 * @return \DateTime|string A \DateTime object, original string on failure.
 	 */
 	public function to_datetime( string $string = '' ) {
-		if ( empty( $string ) && is_a( $this, Data_Value::class ) ) {
+		if ( empty( $string ) && is_a( $this, Base_Attribute::class ) ) {
 			$string = $this->get();
 		}
 
@@ -44,7 +44,7 @@ trait String_Utils {
 	 * @return \stdClass|string A PHP stdClass Object, original string on failure.
 	 */
 	public function json_decode( string $string = '' ) {
-		if ( empty( $string ) && is_a( $this, Data_Value::class ) ) {
+		if ( empty( $string ) && is_a( $this, Base_Attribute::class ) ) {
 			$string = $this->get();
 		}
 
@@ -71,7 +71,7 @@ trait String_Utils {
 	 * @return mixed  Result of unserialization, original string on failure.
 	 */
 	public function unserialize( string $string = '' ) {
-		if ( empty( $string ) && is_a( $this, Data_Value::class ) ) {
+		if ( empty( $string ) && is_a( $this, Base_Attribute::class ) ) {
 			$string = $this->get();
 		}
 		return maybe_unserialize( $string );
@@ -86,7 +86,7 @@ trait String_Utils {
 	 * @return boolean          True if found, false otherwise.
 	 */
 	public function contains( string $needle, $haystack = null ) : bool {
-		if ( is_null( $haystack ) && is_a( $this, Data_Value::class ) ) {
+		if ( is_null( $haystack ) && is_a( $this, Base_Attribute::class ) ) {
 			$haystack = $this->get();
 		}
 
@@ -105,9 +105,24 @@ trait String_Utils {
 	 * @return bool              True if valid url, false otherwise
 	 */
 	public function validate_url( string $text = null ) : bool {
-		if ( is_null( $text ) && is_a( $this, Data_Value::class ) ) {
+		if ( is_null( $text ) && is_a( $this, Base_Attribute::class ) ) {
 			$text = $this->get();
 		}
 		return ( false !== filter_var( $text, FILTER_VALIDATE_URL ) );
+	}
+
+	/**
+	 * Replace
+	 *
+	 * @param string $search  The string being searched for.
+	 * @param string $replace The replacement value.
+	 * @param string $text    The subject of the search.
+	 * @return string         A string with the replaced values.
+	 */
+	public function replace( string $search, string $replace, string $text = null ) : string {
+		if ( is_null( $text ) && is_a( $this, Base_Attribute::class ) ) {
+			$text = $this->get();
+		}
+		return str_replace( $search, $replace, $text );
 	}
 }

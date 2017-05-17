@@ -7,10 +7,12 @@
  */
 
 namespace Lift\Playbook;
-use Lift\Playbook\UI\Data_Value;
+use Lift\Playbook\Interfaces\Attribute;
+use Lift\Playbook\UI\Attribute_Factory;
+use Lift\Playbook\UI\Base_Attribute;
 use Lift\Playbook\Playbook_Strict_Type_Exception;
 
-class Data_ValueTest extends \PHPUnit_Framework_Testcase {
+class Base_Attribute_Test extends \PHPUnit_Framework_Testcase {
 
 	public function setUp() {
 		\WP_Mock::setUp();
@@ -43,11 +45,11 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 	/**  @dataProvider data_values */
 	public function test___construct( $value ) {
 		$name = 'test_property';
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 
 		$this->assertEquals( $name, $class->name );
 		$this->assertEquals( $value, $class->value );
-		$this->assertEquals( gettype($value), $class->type() );
+		$this->assertEquals( strtolower(gettype($value)), $class->type );
 	}
 
 	/**  @dataProvider data_values */
@@ -56,13 +58,13 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$old_value = 'Initial Value';
 
 		// Setup with Old Value
-		$class = new Data_Value( $name, $old_value );
+		$class = Attribute_Factory::create( $name, $old_value );
 
 		// Test Old Value
 		$this->assertEquals( $old_value, $class->value );
 
 		// Set New Value
-		$class->set( $new_value );
+		$class = $class->set( $new_value );
 
 		// Test New Value
 		$this->assertEquals( $new_value, $class->value );
@@ -74,13 +76,13 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$old_value = 'Initial Value';
 
 		// Setup with Old Value
-		$class = new Data_Value( $name, $old_value );
+		$class = Attribute_Factory::create( $name, $old_value );
 
 		// Test Old Value
 		$this->assertEquals( $old_value, $class->value );
 
 		// Set New Value
-		$class->set( $new_value, gettype( $new_value ) );
+		$class = $class->set( $new_value, gettype( $new_value ) );
 
 		// Test New Value
 		$this->assertEquals( $new_value, $class->value );
@@ -91,7 +93,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$name = 'test';
 
 		// Setup with Old Value
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 
 		// Test New Value
 		$this->assertEquals( $value, $class->get() );
@@ -100,7 +102,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 	public function test_is_full_when_full() {
 		$name = 'test';
 		$value = 'full';
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 
 		$this->assertTrue( $class->is_full() );
 	}
@@ -108,7 +110,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 	public function test_is_full_when_empty() {
 		$name = 'test';
 		$value = null;
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 
 		$this->assertFalse( $class->is_full() );
 	}
@@ -118,11 +120,10 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$name = 'test';
 
 		// Setup with Old Value
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 
 		// Test New Value
-		$this->assertEquals( gettype( $value ), $class->type() );
-		$this->assertEquals( gettype( $value), $class->type( gettype( $value ) ) );
+		$this->assertEquals( strtolower(gettype( $value )), $class->type );
 	}
 
 	/**  @dataProvider data_values */
@@ -132,7 +133,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$name = 'test';
 
 		// Setup Class
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 		$freeze = clone $class;
 
 		// Define a filter
@@ -145,8 +146,8 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		// Filter
 		$result = $class->filter( $filter_name );
 
-		// Result should be an instance of Data_Value
-		$this->assertInstanceOf( get_class( $class ), $result );
+		// Result should be an instance of Attribute
+		$this->assertInstanceOf( 'Lift\Playbook\Interfaces\Attribute', $result );
 
 		// Test Response of Filter
 		$this->assertEquals( $filter_response, $result->get() );
@@ -160,7 +161,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$value = '1987-01-12';
 
 		// Setup with Old Value
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 		$freeze = clone $class;
 
 		// Setup a Datetime object from $value
@@ -170,7 +171,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$result = $class->transform( 'datetime' );
 
 		// Test Result
-		$this->assertInstanceOf( get_class( $class), $result );
+		$this->assertInstanceOf( 'Lift\Playbook\Interfaces\Attribute', $result );
 		$this->assertEquals( $dt, $result->get() );
 		$this->assertEquals( $freeze, $class );
 	}
@@ -180,14 +181,14 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$value = 'Not even close to something that can be called a date string!';
 
 		// Setup with Value
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 		$freeze = clone $class;
 
 		// Run
 		$result = $class->transform( 'datetime' );
 
 		// Test Result
-		$this->assertInstanceOf( get_class( $class), $result );
+		$this->assertInstanceOf( 'Lift\Playbook\Interfaces\Attribute', $result );
 		$this->assertEquals( $value, $result->get() );
 		$this->assertEquals( $freeze, $class );
 	}
@@ -197,7 +198,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$value = '1987-01-12';
 
 		// Setup with Old Value
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 		$freeze = clone $class;
 
 		// Setup a Datetime object from $value
@@ -217,7 +218,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$value = '{"parent": { "child": "example value" } }';
 
 		// Setup with Old Value
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 		$freeze = clone $class;
 
 		// Setup an object from the json
@@ -227,7 +228,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$result = $class->transform( 'decoded' );
 
 		// Test Result
-		$this->assertInstanceOf( get_class( $class), $result );
+		$this->assertInstanceOf( 'Lift\Playbook\Interfaces\Attribute', $result );
 		$this->assertEquals( $obj, $result->get() );
 		$this->assertEquals( $freeze, $class );
 	}
@@ -237,14 +238,14 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$value = 'invalid[]{}json!__()"\/\1|}{"';
 
 		// Setup with Old Value
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 		$freeze = clone $class;
 
 		// Run
 		$result = $class->transform( 'decoded' );
 
 		// Test Result
-		$this->assertInstanceOf( get_class( $class), $result );
+		$this->assertInstanceOf( 'Lift\Playbook\Interfaces\Attribute', $result );
 		$this->assertEquals( $value, $result->get() );
 		$this->assertEquals( $freeze, $class );
 	}
@@ -254,7 +255,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$value = '{"parent": { "child": "example value" } }';
 
 		// Setup with Old Value
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 		$freeze = clone $class;
 
 		// Setup an object from the json
@@ -274,7 +275,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$value = 'a:3:{i:1;s:6:"elem 1";i:2;s:6:"elem 2";i:3;s:7:" elem 3";}';
 
 		// Setup with value
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 		$freeze = clone $class;
 
 		// Unserialize the string
@@ -291,7 +292,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$result = $class->transform( 'unserialized' );
 
 		// Test Result
-		$this->assertInstanceOf( get_class( $class), $result );
+		$this->assertInstanceOf( 'Lift\Playbook\Interfaces\Attribute', $result );
 		$this->assertEquals( $arr, $result->get() );
 		$this->assertEquals( $freeze, $class );
 	}
@@ -300,7 +301,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$name = 'test';
 		$value = 'Check for foo';
 
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 		$this->assertTrue( $class->contains( 'foo' ) );
 	}
 
@@ -308,23 +309,16 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$name = 'test';
 		$value = 'Check for foo';
 
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 		$this->assertFalse( $class->contains( 'bar' ) );
 	}
 
-	public function test_contains_on_not_a_string() {
-		$name = 'test';
-		$value = 1;
-
-		$class = new Data_Value( $name, $value );
-		$this->assertFalse( $class->contains( '1' ) );
-	}
 
 	public function test_transform_invalid() {
 		$name = 'test';
 		$value = 'test value';
 
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 
 		$result = $class->transform( 'invalid' );
 
@@ -336,9 +330,10 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		\WP_Mock::tearDown();
 		\WP_Mock::setUp();
 		$name = 'test';
+		$value = 'string';
 
 		// Setup Class
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 		$freeze = clone $class;
 
 		// Define a filter
@@ -351,7 +346,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		// Filter
 		$result = $class->$filter_name();
 
-		// Result should be an instance of Data_Value
+		// Result should be an instance of Base_Attribute
 		$this->assertInstanceOf( get_class( $class ), $result );
 
 		// Test Response of Filter
@@ -365,7 +360,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 	public function test___toString( $value ) {
 		$name = 'test';
 
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 
 		$this->assertEquals( 'string', gettype( (string) $class ) );
 	}
@@ -374,7 +369,7 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 	public function test___invoke( $value ) {
 		$name = 'test';
 
-		$class = new Data_Value( $name, $value );
+		$class = Attribute_Factory::create( $name, $value );
 
 		$this->assertEquals( $value, $class() );
 	}
@@ -385,9 +380,9 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$string = 'string';
 		$integer = 1;
 
-		$class = new Data_Value( $name, $string );
+		$class = Attribute_Factory::create( $name, $string );
 		$class->use_strict = true;
-		$class->set( $integer);
+		$class = $class->set( $integer);
 
 		$class->assertNotEquals( $integer, $class->get() );
 	}
@@ -397,9 +392,9 @@ class Data_ValueTest extends \PHPUnit_Framework_Testcase {
 		$string = 'string';
 		$integer = 'another_string';
 
-		$class = new Data_Value( $name, $string );
-		$class->use_strict = true;
-		$class->set( $integer);
+		$class = Attribute_Factory::create( $name, $string );
+		$class->use_strict = false;
+		$class = $class->set( $integer);
 
 		$class->assertNotEquals( $integer, $class->get() );
 	}
