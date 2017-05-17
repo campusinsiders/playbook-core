@@ -1,7 +1,7 @@
 {
   "name": "liftux/playbook-core",
   "description": "A PHP library to compose components and modules for use in WordPress Themes.",
-  "type": "wordpress-muplugin",
+  "type": "wordpress-plugin",
   "keywords": [
     "wordpress",
     "plugin",
