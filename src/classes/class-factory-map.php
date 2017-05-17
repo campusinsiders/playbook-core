@@ -43,7 +43,7 @@ final class Factory_Map {
 	 * Register Factory
 	 *
 	 * @since  v2.0.0
-	 * @param  string                     $reference A string reference to the factory.
+	 * @param  string           $reference A string reference to the factory.
 	 * @param  Template_Factory $class     A Factory implementing TemplateFactorInterface.
 	 * @return self                                instance
 	 */
@@ -61,7 +61,7 @@ final class Factory_Map {
 	 * Replace Factory
 	 *
 	 * @since  v2.0.0
-	 * @param  string                     $reference A reference to the factory.
+	 * @param  string           $reference A reference to the factory.
 	 * @param  Template_Factory $class     A factory to replace the currently set factory with.
 	 * @return self                                instance
 	 */
@@ -96,7 +96,8 @@ final class Factory_Map {
 	 * @return Template_Factory|null  The factory, or null if factory doesn't exist
 	 */
 	public function get_factory( string $reference ) {
-		if ( false !== ( $key = $this->get_factory_key_in_map( $reference ) ) ) {
+		$key = $this->get_factory_key_in_map( $reference );
+		if ( false !== $key ) {
 			return $this->factories[ $key ]();
 		}
 		return null;

@@ -45,7 +45,7 @@ class Hooks {
 		if ( ! function_exists( '\apply_filters' ) ) {
 			return $value;
 		}
-		$args = apply_filters( 'playbook\apply_filters', func_get_args() );
+		$args = apply_filters( 'playbook_apply_filters', func_get_args() );
 		return call_user_func_array( '\apply_filters', $args );
 	}
 
@@ -67,7 +67,7 @@ class Hooks {
 		if ( ! function_exists( 'do_action' ) ) {
 			return;
 		}
-		$args = apply_filters( 'playbook\do_action', func_get_args() );
+		$args = apply_filters( 'playbook_do_action', func_get_args() );
 		call_user_func_array( 'do_action', $args );
 	}
 }

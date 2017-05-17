@@ -9,6 +9,11 @@
 namespace Lift\Playbook;
 
 /**
+ * Class: Playbok Exception
+ */
+class Playbook_Exception extends \Exception {}
+
+/**
  * Class: Playbook Render Exception
  *
  * @since  v2.0.0

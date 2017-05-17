@@ -88,7 +88,8 @@ class Playbook_Demo {
 	 * @return string A class name
 	 */
 	public function get_class_name() : string {
-		return $this->class_name = $this->reflection->getShortName();
+		$this->class_name = $this->reflection->getShortName();
+		return $this->class_name;
 	}
 
 	/**
@@ -303,7 +304,7 @@ class Playbook_Demo {
 		<?php
 
 		foreach ( get_object_vars( $this ) as $prop => $value ) {
-			$this->$prop = $value = null;
+			$this->$prop = null;
 		}
 
 		return $this;

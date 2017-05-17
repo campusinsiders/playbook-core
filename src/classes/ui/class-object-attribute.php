@@ -28,7 +28,7 @@ class Object_Attribute extends Base_Attribute implements Attribute {
 	 * @param object $value The value of the attribute.
 	 */
 	public function __construct( string $name, $value ) {
-		if ( $this->is_valid( $value ) ) {	
+		if ( $this->is_valid( $value ) ) {
 			$this->type = 'object';
 			parent::__construct( $name, $value );
 		}

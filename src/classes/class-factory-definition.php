@@ -34,7 +34,7 @@ final class Factory_Definition {
 	 * Constructor
 	 *
 	 * @since  v2.0.0
-	 * @param string                     $reference String reference to the Factory.
+	 * @param string           $reference String reference to the Factory.
 	 * @param Template_Factory $class     Factory to use, identified by $reference.
 	 */
 	public function __construct( string $reference, Template_Factory $class ) {

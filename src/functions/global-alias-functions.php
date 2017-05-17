@@ -35,7 +35,6 @@ if ( ! function_exists( 'playbook_get_factory' ) ) :
 			return null;
 		}
 		$instance = playbook()->get_factory_map()->get_factory( $reference );
-		//var_dump( playbook()->get_factory_map() );
 		return $instance;
 	}
 endif;

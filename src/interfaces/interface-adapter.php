@@ -15,7 +15,7 @@ interface Adapter {
 	 * Set Source
 	 *
 	 * @since  v2.0.0
-	 * @param  mixed  $source The source object.
+	 * @param  mixed $source The source object.
 	 * @return Adapter        Instance of self.
 	 */
 	public function set_source( $source ) : Adapter;

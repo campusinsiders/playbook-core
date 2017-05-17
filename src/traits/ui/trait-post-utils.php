@@ -39,7 +39,7 @@ trait Post_Utils {
 	 * @return array          An array of all post terms.
 	 */
 	public static function get_all_post_terms( \WP_Post $post ) : array {
-		$taxonomies = get_object_taxonomies( $post, $output = 'names' );
+		$taxonomies = get_object_taxonomies( $post, 'names' );
 		$terms = array();
 		foreach ( $taxonomies as $taxonomy ) {
 			$terms[ $taxonomy ] = get_the_terms( $post->ID, $taxonomy );
@@ -109,7 +109,8 @@ trait Post_Utils {
 	 * @return string         The excerpt
 	 */
 	public static function get_the_excerpt( \WP_Post $post ) : string {
-		if ( empty( $excerpt = $post->post_excerpt ) ) {
+		$excerpt = $post->post_excerpt;
+		if ( empty( $excerpt ) ) {
 			$excerpt = Hooks::apply_filters( 'the_content', $post->post_content );
 			$excerpt = str_replace( ']]>', ']]&gt;', $excerpt );
 			$excerpt_length = Hooks::apply_filters( 'excerpt_length', 55 );

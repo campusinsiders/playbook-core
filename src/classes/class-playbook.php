@@ -66,8 +66,8 @@ class Playbook {
 	/**
 	 * Static Factory
 	 *
-	 * @param  bool     $prefer_new Optional flag defining whether to get a new instance, defaults to the singleton instance.
-	 * @return Playbook             Self instance.
+	 * @param  bool|boolean $prefer_new Optional flag defining whether to get a new instance, defaults to the singleton.
+	 * @return Playbook                 Self instance.
 	 */
 	public static function factory( bool $prefer_new = false ) : Playbook {
 		if ( $prefer_new ) {
@@ -102,7 +102,7 @@ class Playbook {
 	/**
 	 * Add Factory
 	 *
-	 * @param string                     $reference Reference to the template factory.
+	 * @param string           $reference Reference to the template factory.
 	 * @param Template_Factory $factory   Template factory.
 	 * @return Playbook                             Instance of self
 	 */
@@ -181,14 +181,16 @@ class Playbook {
 	 * @return string                         The template that should be shown.
 	 */
 	public function get_demo_template( string $original_template = null ) : string {
-		if ( $comp = get_query_var( 'playbook_component' ) ) {
+		$comp = get_query_var( 'playbook_component' );
+		if ( $comp ) {
 			$theme = locate_template( [ 'playbook-demo-' . $comp . '.php', 'playbook-demo.php' ] );
 			return ( '' !== $theme )
 				? apply_filters( 'playbook_demo_template_include', $theme )
 				: $this->get_demo_template_path();
 		}
 
-		if ( $factory = get_query_var( 'playbook_factory' ) ) {
+		$factory = get_query_var( 'playbook_factory' );
+		if ( $factory ) {
 			$theme = locate_template( [ 'playbook-demo-' . $factory . '.php', 'playbook-demo.php' ] );
 			return ( '' !== $theme )
 				? apply_filters( 'playbook_demo_template_include', $theme )

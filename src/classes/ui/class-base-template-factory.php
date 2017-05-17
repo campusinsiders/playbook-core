@@ -125,14 +125,4 @@ abstract class Base_Template_Factory implements Template_Factory {
 	 * @return  void 	Private no op.
 	 */
 	private function __clone() {}
-
-	/**
-	 * __wakeup
-	 *
-	 * @codeCoverageIgnore
-	 * @since   v2.0.0
-	 * @access  private
-	 * @return  void 	Private no op.
-	 */
-	//private function __wakeup() {}
 }

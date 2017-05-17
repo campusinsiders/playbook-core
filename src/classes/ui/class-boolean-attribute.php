@@ -42,7 +42,7 @@ class Boolean_Attribute extends Base_Attribute implements Attribute {
 	 * @return boolean
 	 */
 	public function is_valid( $value ) {
-		if ( ! is_bool( $value ) ) {			
+		if ( ! is_bool( $value ) ) {
 			if ( $this->use_strict ) {
 				throw new Playbook_Strict_Type_Exception( 'Expected value to be a boolean, ' . gettype( $value ) . ' given.' );
 			}

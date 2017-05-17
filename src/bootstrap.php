@@ -2,8 +2,14 @@
 /**
  * Playbook Bootstrapper
  */
+
+// Very very deprecated.
+// @codingStandardsIgnoreStart
 namespace Old_Playbook;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Core {
 
 	protected static $instance = null;
@@ -21,8 +27,8 @@ class Core {
 	public static $rel_path = null;
 
 	public function __construct() {
-		//$this->load_config();
-		//$this->load_supplementals();
+		// $this->load_config();
+		// $this->load_supplementals();
 		$this->set_global_properties();
 	}
 
