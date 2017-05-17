@@ -9,7 +9,8 @@
 
 namespace Lift\Playbook\UI;
 use Lift\Playbook\Playbook_Render_Exception;
-use Lift\Playbook\UI\Data_Value;
+use Lift\Playbook\Interfaces\Template;
+use Lift\Playbook\Interfaces\Attribute;
 use Lift\Core\Interfaces\File_Loader;
 
 /**
@@ -19,7 +20,7 @@ use Lift\Core\Interfaces\File_Loader;
  *
  * @since  v2.0.0
  */
-abstract class Base_Template {
+abstract class Base_Template implements Template {
 
 	/**
 	 * The path of file that will act as the Renderer for the Component/Module template
@@ -47,7 +48,7 @@ abstract class Base_Template {
 	 */
 	public function __construct( array $attributes = [], File_Loader $file_loader = null ) {
 		foreach ( get_object_vars( $this ) as $prop => $value ) {
-			$this->$prop = new Data_Value( $prop, $value );
+			$this->$prop = Attribute_Factory::create( $prop, $value );
 		}
 
 		if ( $file_loader ) {
@@ -62,16 +63,17 @@ abstract class Base_Template {
 	 *
 	 * @since v2.0.0
 	 * @param  Array $attributes Maps an associative array of name => values to the object props.
-	 * @return Base_Template       Instance of $this with filled properties
+	 * @return Template          Instance of $this with filled properties
 	 */
-	public function apply( array $attributes ) : Base_Template {
+	public function apply( array $attributes ) : Template {
 		foreach ( $attributes as $name => $value ) {
+			$setter = ( method_exists( $this, 'set_' . $name ) ) ? array( $this, 'set_' . $name ) : null;
 			if ( property_exists( $this, $name ) ) {
-				if ( is_a( $this->$name, Data_Value::class ) ) {
-					$this->$name = $this->$name->set( $value );
+				if ( $this->$name instanceof Attribute ) {
+					$this->$name = $this->$name->set( ( $setter ? call_user_func( $setter, $value ) : $value ) );
 					continue;
 				}
-				$this->$name = new Data_Value( $name, $value );
+				$this->$name = Attribute_Factory::create( $name, ( $setter ? call_user_func( $setter, $value ) : $value  ) );
 			}
 		}
 		return $this;
@@ -94,9 +96,9 @@ abstract class Base_Template {
 	 * @since v2.0.0
 	 * @param String $name  The property to set.
 	 * @param mixed  $value  The value to set the property to.
-	 * @return  Data_Value   A Data_Value object with the property set
+	 * @return  Base_Attribute   A Base_Attribute object with the property set
 	 */
-	public function set( string $name, $value ) : Data_Value {
+	public function set( string $name, $value ) : Attribute {
 		return $this->$name = $this->$name->set( $value );
 	}
 
@@ -224,5 +226,20 @@ abstract class Base_Template {
 			echo esc_html( $t->getMessage() );
 		}
 		return ob_get_clean();
+	}
+
+	/**
+	 * Magic __call
+	 *
+	 * @since  v2.0.0
+	 * @param  string $name      The name of the called method.
+	 * @param  array  $arguments Enumerated arguments.
+	 * @return mixed             The value of the property that matched called method, or null.
+	 */
+	public function __call( string $name, $arguments ) {
+		if ( $this->has( $name ) ) {
+			return $this->get( $name );
+		}
+		return null;
 	}
 }

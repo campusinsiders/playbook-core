@@ -7,7 +7,9 @@
  */
 
 namespace Lift\Playbook;
-use Lift\Playbook\UI\Data_Value;
+use Lift\Playbook\Interfaces\Attribute;
+use Lift\Playbook\UI\Base_Attribute;
+use Lift\Playbook\UI\Attribute_Factory;
 use Lift\Playbook\UI\Components\Example_Component;
 use Lift\Playbook\Playbook_Strict_Type_Exception;
 
@@ -64,14 +66,14 @@ class Base_Component_Test extends \PHPUnit_Framework_Testcase {
 
 		$this->class->apply( $array );
 
-		$this->assertEquals( new Data_Value( 'string', 'new string' ), $this->class->string );
+		$this->assertEquals( Attribute_Factory::create( 'string', 'new string' ), $this->class->string );
 
 		// Add new property
 		$this->class->new_prop = 'new prop';
 
 		$this->class->apply(['new_prop' => 'new value for prop' ]);
 
-		$this->assertEquals( new Data_Value( 'new_prop', 'new value for prop' ), $this->class->new_prop );
+		$this->assertEquals( Attribute_Factory::create( 'new_prop', 'new value for prop' ), $this->class->new_prop );
 	}
 
 	public function test_component_will_render() {

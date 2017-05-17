@@ -8,7 +8,7 @@
  */
 
 namespace Lift\Playbook;
-use Lift\Playbook\Interfaces\Template_Factory_Interface;
+use Lift\Playbook\Interfaces\Template_Factory;
 
 /**
  * Class: Factory_Map
@@ -24,7 +24,7 @@ final class Factory_Map {
 	/**
 	 * Factories
 	 *
-	 * @var Template_Factory_Interface[]
+	 * @var Template_Factory[]
 	 */
 	public $factories;
 
@@ -44,10 +44,10 @@ final class Factory_Map {
 	 *
 	 * @since  v2.0.0
 	 * @param  string                     $reference A string reference to the factory.
-	 * @param  Template_Factory_Interface $class     A Factory implementing TemplateFactorInterface.
+	 * @param  Template_Factory $class     A Factory implementing TemplateFactorInterface.
 	 * @return self                                instance
 	 */
-	public function register_factory( string $reference, Template_Factory_Interface $class ) : Factory_Map {
+	public function register_factory( string $reference, Template_Factory $class ) : Factory_Map {
 		if ( ! in_array( $reference, $this->list_refs(), true ) ) {
 			array_push( $this->factories, new Factory_Definition( $reference, $class ) );
 		} else {
@@ -62,10 +62,10 @@ final class Factory_Map {
 	 *
 	 * @since  v2.0.0
 	 * @param  string                     $reference A reference to the factory.
-	 * @param  Template_Factory_Interface $class     A factory to replace the currently set factory with.
+	 * @param  Template_Factory $class     A factory to replace the currently set factory with.
 	 * @return self                                instance
 	 */
-	public function replace_factory( string $reference, Template_Factory_Interface $class ) : Factory_Map {
+	public function replace_factory( string $reference, Template_Factory $class ) : Factory_Map {
 		$this->factories = array_map( function( $factory ) use ( $reference, $class ) {
 			return ( $reference === $factory->reference ) ? $factory->set( $class ) : $factory;
 		}, $this->factories );
@@ -93,7 +93,7 @@ final class Factory_Map {
 	 *
 	 * @since  v2.0.0
 	 * @param  string $reference A reference to factory.
-	 * @return Template_Factory_Interface|null  The factory, or null if factory doesn't exist
+	 * @return Template_Factory|null  The factory, or null if factory doesn't exist
 	 */
 	public function get_factory( string $reference ) {
 		if ( false !== ( $key = $this->get_factory_key_in_map( $reference ) ) ) {

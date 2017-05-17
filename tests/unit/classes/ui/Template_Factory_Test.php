@@ -12,7 +12,7 @@ use Lift\Playbook\UI\Components\Example_Component;
 use Lift\Playbook\TestHelpers\WP_Objects;
 use Mockery;
 
-class Template_Factory_Test extends \PHPUnit_Framework_Testcase {
+class Base_Template_Factory_Test extends \PHPUnit_Framework_Testcase {
 	use WP_Objects;
 
 	public function setUp() {

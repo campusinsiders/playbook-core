@@ -5,6 +5,7 @@
  * This is the entry point for playbook.  Thanks for working on it :)
  *
  * @version 0.1.0 Canonical version, bump this alongside package.json
+ * @package Lift\Playbook
  */
 
 use Lift\Playbook\Playbook_Demo;
@@ -22,26 +23,30 @@ use Lift\Playbook\Playbook_Demo;
 
 	<body>
 		<?php
-			if ( get_query_var( 'playbook_component' ) ) {
-				$component = 'Lift\Playbook\UI\Components\\' . get_query_var( 'playbook_component' );
-				$demo = new Playbook_Demo();
-				$demo->setup( new $component )
-					->add_header(
-						$demo->add_default_badges(),
-						$demo->add_badge( 'My Custom Badge' )
-						)
-					->add_demo( new $component( $_GET['attributes'] ?? [] ) )
-					->cleanup();
-			}
+		if ( get_query_var( 'playbook_component' ) ) {
+			$component = 'Lift\Playbook\UI\Components\\' . get_query_var( 'playbook_component' );
+			echo '<pre>';
+			var_dump( $_GET['attributes'] );
+			echo '</pre>';
+			$demo = new Playbook_Demo();
+			$demo->setup( new $component )
+				->add_header(
+					$demo->add_default_badges(),
+					$demo->add_badge( 'My Custom Badge' )
+				)
+				->add_demo( new $component( $_GET['attributes'] ?? [] ) )
+				->cleanup();
+		}
 
-			if ( get_query_var( 'playbook_factory' ) ) {
-				$factory = playbook_get_factory( get_query_var( 'playbook_factory' ) );
-				$demo = new Playbook_Demo();
-				$demo->setup( $factory::create() )
-					->add_header( $demo->add_default_badges() )
-					->add_demo( $factory::bootstrap( get_queried_object(), $_GET['attributes'] ?? [] ) )
-					->cleanup();
-			}
+		if ( get_query_var( 'playbook_factory' ) ) {
+			$factory = playbook_get_factory( get_query_var( 'playbook_factory' ) );
+			$demo = new Playbook_Demo();
+			global $post;
+			$demo->setup( $factory::create() )
+				->add_header( $demo->add_default_badges() )
+				->add_demo( $factory::bootstrap( $post, $_GET['attributes'] ?? [] ) )
+				->cleanup();
+		}
 		?>
 		<?php wp_footer();?>
 	</body>

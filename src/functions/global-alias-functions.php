@@ -17,7 +17,7 @@ if ( ! function_exists( 'playbook' ) ) :
 	 * @return Playbook The main instance of Playbook
 	 */
 	function playbook() : Playbook {
-		global $playbook;
+		$playbook = Playbook::factory();
 		return $playbook;
 	}
 endif;
@@ -34,7 +34,9 @@ if ( ! function_exists( 'playbook_get_factory' ) ) :
 		if ( ! playbook() instanceof Playbook ) {
 			return null;
 		}
-		return playbook()->get_factory_map()->get_factory( $reference );
+		$instance = playbook()->get_factory_map()->get_factory( $reference );
+		//var_dump( playbook()->get_factory_map() );
+		return $instance;
 	}
 endif;
 

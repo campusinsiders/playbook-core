@@ -20,7 +20,13 @@ use Lift\Core\Hook_Catalog;
 
 define( 'PLAYBOOK_CORE_PATH', dirname( __FILE__ ) );
 
-require_once plugin_dir_path( __FILE__ ) . '/src/functions/global-alias-functions.php';
+// Require the library files.
+require_once plugin_dir_path( __FILE__ ) . '/vendor/autoload.php';
 
-global $playbook;
-$playbook = new Playbook( new Hook_Catalog, new Factory_Map );
+add_action( 'plugins_loaded', function() {
+	if ( ! class_exists( 'Lift\Core\Hook_Catalog' ) ) {
+		wp_die( 'Core Library Does Not Exist.' );
+	}
+	global $playbook;
+	$playbook = new Playbook( new Hook_Catalog, new Factory_Map );
+}, 5 );

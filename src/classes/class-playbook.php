@@ -34,6 +34,13 @@ class Playbook {
 	public $factory_map;
 
 	/**
+	 * Singleton Instance
+	 *
+	 * @var Playbook
+	 */
+	static $singleton;
+
+	/**
 	 * Constructor
 	 *
 	 * @since v2.0.0
@@ -54,6 +61,22 @@ class Playbook {
 		do_action( 'playbook_loaded', $this );
 
 		return $this;
+	}
+
+	/**
+	 * Static Factory
+	 *
+	 * @param  bool     $prefer_new Optional flag defining whether to get a new instance, defaults to the singleton instance.
+	 * @return Playbook             Self instance.
+	 */
+	public static function factory( bool $prefer_new = false ) : Playbook {
+		if ( $prefer_new ) {
+			return new self( new Hook_Catalog, new Factory_Map );
+		}
+		if ( is_null( self::$singleton ) ) {
+			self::$singleton = new self( new Hook_Catalog, new Factory_Map );
+		}
+		return self::$singleton;
 	}
 
 	/**
@@ -80,10 +103,10 @@ class Playbook {
 	 * Add Factory
 	 *
 	 * @param string                     $reference Reference to the template factory.
-	 * @param Template_Factory_Interface $factory   Template factory.
+	 * @param Template_Factory $factory   Template factory.
 	 * @return Playbook                             Instance of self
 	 */
-	public function add_factory( string $reference, Template_Factory_Interface $factory ) : Playbook {
+	public function add_factory( string $reference, Template_Factory $factory ) : Playbook {
 		$this->get_factory_map()->register_factory( $reference, $factory );
 		return $this;
 	}
