@@ -63,6 +63,10 @@ abstract class Base_Template_Factory implements Template_Factory {
 			return static::wp_user( $object, $defaults );
 		}
 
+		if ( false !== wp_get_nav_menu_object( $object ) ) {
+			return static::nav_menus( $object, $defaults );
+		}
+
 		return static::create( array_merge( (array) $object, $defaults ) );
 	}
 

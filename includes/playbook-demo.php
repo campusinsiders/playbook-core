@@ -43,9 +43,14 @@ use Lift\Playbook\Playbook_Demo;
 			$demo = new Playbook_Demo();
 			global $post;
 			$demo->setup( $factory::create() )
-				->add_header( $demo->add_default_badges() )
-				->add_demo( $factory::bootstrap( $post, $_GET['attributes'] ?? [] ) )
+				->add_header( $demo->add_default_badges() );
+			if ( isset( $_GET['nav_menu'] ) ) {
+				$demo->add_demo( call_user_func_array( array( $factory, 'nav_menus' ), array( [ urldecode( $_GET['nav_menu'] ) ] ) ) )
+					->cleanup();
+			} else {
+				$demo->add_demo( $factory::bootstrap( $post, $_GET[ 'attributes' ] ?? [] ) )
 				->cleanup();
+			}
 		}
 		?>
 		<?php wp_footer();?>

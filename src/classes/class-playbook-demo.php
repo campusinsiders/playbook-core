@@ -282,7 +282,7 @@ class Playbook_Demo {
 				</h3>
 
 				<div class="<?php echo esc_attr( $class_base ) . '--template'; ?>">
-					<?php echo $template; ?>
+					<?php $template->render(); ?>
 				</div>
 
 			</div>
