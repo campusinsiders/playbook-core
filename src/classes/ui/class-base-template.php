@@ -111,7 +111,7 @@ abstract class Base_Template implements Template {
 	 * @return boolean       True if the value is not `null`, false if it is.
 	 */
 	public function has( string $name ) : bool {
-		return $this->$name->is_set();
+		return ( ! $this->$name instanceof Attribute ) ? false : $this->$name->is_set();
 	}
 
 	/**
