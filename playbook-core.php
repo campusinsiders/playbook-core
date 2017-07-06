@@ -20,9 +20,6 @@ use Lift\Core\Hook_Catalog;
 
 define( 'PLAYBOOK_CORE_PATH', dirname( __FILE__ ) );
 
-// Require the library files.
-require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
-
 add_action( 'plugins_loaded', function() {
 	if ( ! class_exists( 'Lift\Core\Hook_Catalog' ) ) {
 		wp_die( 'Core Library Does Not Exist.' );
