@@ -46,7 +46,7 @@ class Base_Component extends Base_Template {
 		if ( $this->has( 'component_id' ) ) {
 			return $this->component_id;
 		}
-		return $this->component_id->set( uniqid( strtolower( $this->get_component_name() ) ) );
+		return uniqid( strtolower( $this->get_component_name() ) );
 	}
 
 	/**

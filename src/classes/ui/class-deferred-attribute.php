@@ -22,12 +22,14 @@ class Deferred_Attribute extends Base_Attribute implements Attribute {
 	/**
 	 * Constructor
 	 *
-	 * @param string $name  The name of the attribute.
-	 * @param string $value The value of the attribute.  Should be null.
+	 * @param string        $name   The name of the attribute.
+	 * @param mixed         $value  The value of the attribute, if not null will return an assigned Attribute.
+	 * @param null|callable $setter An optional callable setter, passed the desired value.
+	 * @param null|callable $getter An optional callable getter, passed the current value.
 	 */
-	public function __construct( string $name, $value ) {
+	public function __construct( string $name, $value, callable $setter = null, callable $getter = null ) {
 		$this->type = 'null';
-		parent::__construct( $name, null );
+		parent::__construct( $name, null, $setter, $getter );
 		if ( ! is_null( $value ) ) {
 			return $this->set( $value );
 		}
@@ -40,6 +42,6 @@ class Deferred_Attribute extends Base_Attribute implements Attribute {
 	 * @return Attribute
 	 */
 	public function set( $value ) : Attribute {
-		return Attribute_Factory::create( $this->name, $value );
+		return Attribute_Factory::create( $this->name, $value, $this->setter, $this->getter );
 	}
 }
