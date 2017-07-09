@@ -17,11 +17,13 @@ interface Attribute {
 	 * Constructor
 	 *
 	 * @since v2.0.0
-	 * @param String $name  The name of the Attribute.
-	 * @param mixed  $value The immutable value.
+	 * @param string        $name   The name of the attribute.
+	 * @param mixed         $value  The value of the attribute.
+	 * @param null|callable $setter An optional callable setter, passed the desired value.
+	 * @param null|callable $getter An optional callable getter, passed the current value.
 	 * @return Attribute   $this
 	 */
-	public function __construct( string $name, $value );
+	public function __construct( string $name, $value, callable $setter = null, callable $getter = null );
 
 	/**
 	 * Set

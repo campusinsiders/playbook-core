@@ -68,12 +68,15 @@ abstract class Base_Template implements Template {
 	public function apply( array $attributes ) : Template {
 		foreach ( $attributes as $name => $value ) {
 			$setter = ( method_exists( $this, 'set_' . $name ) ) ? array( $this, 'set_' . $name ) : null;
+			$getter = ( method_exists( $this, 'get_' . $name ) ) ? array( $this, 'get_' . $name ) : null;
 			if ( property_exists( $this, $name ) ) {
 				if ( $this->$name instanceof Attribute ) {
-					$this->$name = $this->$name->set( ( $setter ? call_user_func( $setter, $value ) : $value ) );
+					$this->$name->setter = $setter;
+					$this->$name->getter = $getter;
+					$this->$name = $this->$name->set( $value );
 					continue;
 				}
-				$this->$name = Attribute_Factory::create( $name, ( $setter ? call_user_func( $setter, $value ) : $value  ) );
+				$this->$name = Attribute_Factory::create( $name, $value, $setter, $getter );
 			}
 		}
 		return $this;
@@ -238,8 +241,11 @@ abstract class Base_Template implements Template {
 	 * @return mixed             The value of the property that matched called method, or null.
 	 */
 	public function __call( string $name, $arguments ) {
-		if ( $this->has( $name ) ) {
-			return $this->get( $name );
+		$getter = 'get_' . $name;
+		if ( $this->has( $name ) || method_exists( $this, $getter ) ) {
+			return method_exists( $this, $getter )
+				? call_user_func( [ $this, $getter, $arguments ] )
+				: $this->get( $name );
 		}
 		return null;
 	}

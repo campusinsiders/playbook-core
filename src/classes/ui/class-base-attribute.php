@@ -41,6 +41,20 @@ class Base_Attribute implements Attribute {
 	public $value;
 
 	/**
+	 * Getter
+	 *
+	 * @var callable|null Callable function to handle getting the value.
+	 */
+	public $getter;
+
+	/**
+	 * Setter
+	 *
+	 * @var callable|null Callable function to handle setting the value.
+	 */
+	public $setter;
+
+	/**
 	 * The value type, strict when use_strict is (bool) true
 	 *
 	 * @since v2.0.0
@@ -60,13 +74,17 @@ class Base_Attribute implements Attribute {
 	 * Constructor
 	 *
 	 * @since v2.0.0
-	 * @param String $name  The name of the Base_Attribute.
-	 * @param mixed  $value The immutable value.
-	 * @return Attribute   $this
+	 * @param string        $name   The name of the attribute.
+	 * @param mixed         $value  The value of the attribute.
+	 * @param null|callable $setter An optional callable setter, passed the desired value.
+	 * @param null|callable $getter An optional callable getter, passed the current value.
+	 * @return Attribute            Self instance.
 	 */
-	public function __construct( string $name, $value ) {
+	public function __construct( string $name, $value, callable $setter = null, callable $getter = null ) {
 		$this->name = $name;
-		$this->value = $value;
+		$this->setter = $setter;
+		$this->getter = $getter;
+		$this->value = is_callable( $this->setter ) ? call_user_func( $this->setter, $value ) : $value;
 		$this->use_strict = ( defined( 'WP_DEUBG' ) && WP_DEBUG ) ? true : false;
 		return $this;
 	}
@@ -80,10 +98,10 @@ class Base_Attribute implements Attribute {
 	 */
 	public function set( $value ) : Attribute {
 		if ( $this->is_valid( $value ) ) {
-			$this->value = $value;
+			$this->value = is_callable( $this->setter ) ? call_user_func( $this->setter, $value ) : $value;
 			return $this;
 		}
-		return Attribute_Factory::create( $this->name, $value );
+		return Attribute_Factory::create( $this->name, $value, $this->setter, $this->getter );
 	}
 
 	/**
@@ -93,7 +111,7 @@ class Base_Attribute implements Attribute {
 	 * @return mixed The value
 	 */
 	public function get() {
-		return $this->value;
+		return is_callable( $this->getter ) ? call_user_func( $this->getter, $this->value ) : $this->value;
 	}
 
 	/**
@@ -215,10 +233,10 @@ class Base_Attribute implements Attribute {
 	 * @return string String(iest) representation of the value
 	 */
 	public function __toString() : string {
-		if ( is_scalar( $this->value ) ) {
-			return strval( $this->value );
+		if ( is_scalar( $this->get() ) ) {
+			return strval( $this->get() );
 		} else {
-			return json_encode( $this->value );
+			return json_encode( $this->get() );
 		}
 	}
 
