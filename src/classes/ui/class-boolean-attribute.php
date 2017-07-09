@@ -29,7 +29,7 @@ class Boolean_Attribute extends Base_Attribute implements Attribute {
 	 * @param null|callable $setter An optional callable setter, passed the desired value.
 	 * @param null|callable $getter An optional callable getter, passed the current value.
 	 */
-	public function __construct( string $name, bool $value, callable $setter = null, callable $getter = null ) {
+	public function __construct( string $name, $value, callable $setter = null, callable $getter = null ) {
 		if ( $this->is_valid( $value ) ) {
 			$this->type = 'boolean';
 			parent::__construct( $name, $value, $setter, $getter );

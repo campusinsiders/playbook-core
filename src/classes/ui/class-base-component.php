@@ -30,8 +30,7 @@ class Base_Component extends Base_Template {
 	 * @return  Base_Component An instance of Base_Component
 	 */
 	public function __construct( array $attributes = [] ) {
-		parent::__construct( $attributes );
-		$this->set_component_id();
+		parent::__construct( array_merge( get_object_vars( $this ), $attributes ) );
 		return $this;
 	}
 
