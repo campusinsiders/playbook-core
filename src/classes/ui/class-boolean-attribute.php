@@ -53,6 +53,11 @@ class Boolean_Attribute extends Base_Attribute implements Attribute {
 		return true;
 	}
 
+	/**
+	 * Magic invoke
+	 *
+	 * @return bool The value.
+	 */
 	public function __invoke() {
 		return (bool) $this->value;
 	}
