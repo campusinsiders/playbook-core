@@ -247,7 +247,7 @@ abstract class Base_Template implements Template {
 		$getter = 'get_' . $name;
 		if ( $this->has( $name ) || method_exists( $this, $getter ) ) {
 			return method_exists( $this, $getter )
-				? call_user_func( [ $this, $getter, $arguments ] )
+				? call_user_func( [ $this, $getter ], $arguments )
 				: $this->get( $name );
 		}
 		return null;
