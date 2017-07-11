@@ -125,4 +125,31 @@ trait String_Utils {
 		}
 		return str_replace( $search, $replace, $text );
 	}
+
+	/**
+	 * Hex to RGB
+	 *
+	 * @param  string $hex The hex code.
+	 * @return array       An array of rgb keyed values.
+	 */
+	public function hex2rgb( string $hex = null ) {
+		if ( is_null( $hex ) && is_a( $this, Base_Attribute::class ) ) {
+			$hex = $this->get();
+		}
+		$hex = ltrim( $hex, '#' );
+		if ( strlen( $hex ) < 3 || strlen( $hex ) > 6 ) {
+			return array();
+		}
+		if ( strlen( $hex ) === 3 ) {
+			$red = hexdec( substr( $hex, 0, 1 ) . substr( $hex, 0, 1 ) );
+			$green = hexdec( substr( $hex, 1, 1 ) . substr( $hex, 1, 1 ) );
+			$blue = hexdec( substr( $hex, 2, 1 ) . substr( $hex, 2, 1 ) );
+		} else {
+			$red = hexdec( substr( $hex, 0, 2 ) );
+			$green = hexdec( substr( $hex, 2, 2 ) );
+			$blue = hexdec( substr( $hex, 4, 2 ) );
+		}
+		$rgb_array = array( 'red' => $red, 'green' => $green, 'blue' => $blue );
+		return $rgb_array;
+	}
 }
