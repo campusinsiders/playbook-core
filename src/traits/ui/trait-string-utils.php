@@ -149,7 +149,10 @@ trait String_Utils {
 			$green = hexdec( substr( $hex, 2, 2 ) );
 			$blue = hexdec( substr( $hex, 4, 2 ) );
 		}
-		$rgb_array = array( 'red' => $red, 'green' => $green, 'blue' => $blue );
-		return $rgb_array;
+		return array(
+			'red' => $red,
+			'green' => $green,
+			'blue' => $blue,
+		);
 	}
 }

@@ -103,7 +103,9 @@ abstract class Base_Template implements Template {
 	 * @return  Base_Attribute   A Base_Attribute object with the property set
 	 */
 	public function set( string $name, $value ) : Attribute {
-		$this->apply( [ $name => $value ] );
+		$this->apply( [
+			$name => $value,
+		] );
 		return $this->$name;
 	}
 
