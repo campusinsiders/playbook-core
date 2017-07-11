@@ -52,4 +52,8 @@ class Boolean_Attribute extends Base_Attribute implements Attribute {
 		}
 		return true;
 	}
+
+	public function __invoke() {
+		return (bool) $this->value;
+	}
 }

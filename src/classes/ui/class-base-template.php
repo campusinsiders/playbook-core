@@ -71,6 +71,7 @@ abstract class Base_Template implements Template {
 			$getter = ( method_exists( $this, 'get_' . $name ) ) ? array( $this, 'get_' . $name ) : null;
 			if ( property_exists( $this, $name ) ) {
 				if ( $this->$name instanceof Attribute ) {
+					$this->$name->name = $name;
 					$this->$name->setter = $setter;
 					$this->$name->getter = $getter;
 					$this->$name = $this->$name->set( $value );
@@ -102,7 +103,7 @@ abstract class Base_Template implements Template {
 	 * @return  Base_Attribute   A Base_Attribute object with the property set
 	 */
 	public function set( string $name, $value ) : Attribute {
-		$this->$name = $this->$name->set( $value );
+		$this->apply( [ $name => $value ] );
 		return $this->$name;
 	}
 
