@@ -39,7 +39,8 @@ class Base_Component extends Base_Template {
 	 *
 	 * @uses uniqid()
 	 * @since  v2.0.0
-	 * @return  string A unique id for the specific component instance.
+	 * @param  string $component_id The currently set component id.
+	 * @return string               A unique id for the specific component instance.
 	 */
 	public function get_component_id( $component_id ) : string {
 		if ( '' !== $component_id ) {
