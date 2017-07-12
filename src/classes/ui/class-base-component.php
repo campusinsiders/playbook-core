@@ -35,15 +35,15 @@ class Base_Component extends Base_Template {
 	}
 
 	/**
-	 * Set Component Id
+	 * Get Component Id
 	 *
 	 * @uses uniqid()
 	 * @since  v2.0.0
 	 * @return  string A unique id for the specific component instance.
 	 */
-	public function set_component_id() : string {
-		if ( $this->has( 'component_id' ) ) {
-			return $this->component_id;
+	public function get_component_id( $component_id ) : string {
+		if ( '' !== $component_id ) {
+			return $component_id;
 		}
 		return uniqid( strtolower( $this->get_component_name() ) );
 	}
