@@ -127,6 +127,20 @@ trait String_Utils {
 	}
 
 	/**
+	 * Concat
+	 *
+	 * @param string $addition The string to add.
+	 * @param string $text     The string to add to.
+	 * @return string          The resulting string.
+	 */
+	public function concat( string $addition, string $text = null ) : string {
+		if ( is_null( $text ) && is_a( $this, Base_Attribute::class ) ) {
+			$text = $this->get();
+		}
+		return $text . $addition;
+	}
+
+	/**
 	 * Hex to RGB
 	 *
 	 * @param  string $hex The hex code.
