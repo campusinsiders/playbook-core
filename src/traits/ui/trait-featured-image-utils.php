@@ -30,8 +30,8 @@ trait Featured_Image_Utils {
 		/**
 		 * Filter: Playbook Has Featured Image
 		 *
-		 * @param boolean	$has_image 	Boolean true | false.
-		 * @param \WP_Post 	$post 		A WP_Post object.
+		 * @param boolean   $has_image  Boolean true | false.
+		 * @param \WP_Post  $post       A WP_Post object.
 		 * @since v2.0.0
 		 */
 		return (bool) Hooks::apply_filters( 'playbook\has_featured_image', $has_image , $post );
@@ -54,8 +54,8 @@ trait Featured_Image_Utils {
 		/**
 		 * Filter: Playbook Featured Image Src
 		 *
-		 * @param int|NULL	$img_id The id of the placeholder image.
-		 * @param \WP_Post 	$post 	A WP_Post object.
+		 * @param int|NULL  $img_id The id of the placeholder image.
+		 * @param \WP_Post  $post   A WP_Post object.
 		 * @since v2.0.0
 		 */
 		return intval( Hooks::apply_filters( 'playbook\featured_image_id', $img_id, $post ) );
@@ -79,8 +79,8 @@ trait Featured_Image_Utils {
 		/**
 		 * Filter: Playbook Featured Image Src
 		 *
-		 * @param string 	$url 	The url of the placeholder image.
-		 * @param \WP_Post 	$post 	A WP_Post object.
+		 * @param string    $url    The url of the placeholder image.
+		 * @param \WP_Post  $post   A WP_Post object.
 		 * @since v2.0.0
 		 */
 		return (string) Hooks::apply_filters( 'playbook\featured_image_src', $url, $post );

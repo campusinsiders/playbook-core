@@ -79,9 +79,9 @@ interface Template {
 	 * Defer Rendering to Function
 	 *
 	 * @since  v2.0.0
-	 * @param  callable $func        		A function that will handle rendering of the template.
-	 * @param  boolean  $ignore_return		If the function above returns a value, should we throw.
-	 * @return boolean                   	True if a function handled the rendering, false otherwise.
+	 * @param  callable $func               A function that will handle rendering of the template.
+	 * @param  boolean  $ignore_return      If the function above returns a value, should we throw.
+	 * @return boolean                      True if a function handled the rendering, false otherwise.
 	 */
 	public function defer_rendering_to( $func, bool $ignore_return ) : bool;
 

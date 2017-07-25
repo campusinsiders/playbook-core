@@ -44,7 +44,7 @@ abstract class Base_Template implements Template {
 	 * @since v2.0.0
 	 * @param Array|array      $attributes  An array of attributes, set in child constructors.
 	 * @param File_Loader|null $file_loader An instance of a File_Loader interface.
-	 * @return  Base_Template		        Instance of this with filled properties
+	 * @return  Base_Template               Instance of this with filled properties
 	 */
 	public function __construct( array $attributes = [], File_Loader $file_loader = null ) {
 		foreach ( get_object_vars( $this ) as $prop => $value ) {
@@ -107,9 +107,11 @@ abstract class Base_Template implements Template {
 	 * @return  Base_Attribute   A Base_Attribute object with the property set
 	 */
 	public function set( string $name, $value ) : Attribute {
-		$this->apply( [
-			$name => $value,
-		] );
+		$this->apply(
+			[
+				$name => $value,
+			]
+		);
 		return $this->$name;
 	}
 
@@ -162,9 +164,9 @@ abstract class Base_Template implements Template {
 	 * Defer Rendering to Function
 	 *
 	 * @since  v2.0.0
-	 * @param  callable $func        		A function that will handle rendering of the template.
-	 * @param  boolean  $ignore_return		If the function above returns a value, should we throw.
-	 * @return boolean                   	True if a function handled the rendering, false otherwise.
+	 * @param  callable $func               A function that will handle rendering of the template.
+	 * @param  boolean  $ignore_return      If the function above returns a value, should we throw.
+	 * @return boolean                      True if a function handled the rendering, false otherwise.
 	 */
 	public function defer_rendering_to( $func, bool $ignore_return = false ) : bool {
 		if ( is_callable( $func ) ) {

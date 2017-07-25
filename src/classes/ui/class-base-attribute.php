@@ -175,7 +175,7 @@ class Base_Attribute implements Attribute {
 				return new self( $this->name, $this->json_decode( $this->get() ) );
 			case 'unserialized':
 				return new self( $this->name, $this->unserialize( $this->get() ) );
-			default :
+			default:
 				return $this;
 		}
 	}

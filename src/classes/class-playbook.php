@@ -220,7 +220,7 @@ class Playbook {
 		$default_factories = array(
 			'AuthorInfo' => $namespace . 'AuthorInfoFactory',
 			'PostExcerpt' => $namespace . 'PostExcerptFactory',
-			);
+		);
 
 		foreach ( $default_factories as $reference => $class ) {
 			$this->get_factory_map()->register_factory( $reference, new $class() );

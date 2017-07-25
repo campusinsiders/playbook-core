@@ -207,7 +207,8 @@ class Playbook_Demo {
 	 */
 	public function add_default_badges() : string {
 		ob_start();
-		echo wp_kses_post( $this->add_version_badge()
+		echo wp_kses_post(
+			$this->add_version_badge()
 			. $this->add_dev_docs_badge()
 			. $this->add_factory_badge()
 			. $this->add_code_coverage_badge()

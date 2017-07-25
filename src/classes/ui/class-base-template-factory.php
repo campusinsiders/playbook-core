@@ -77,7 +77,7 @@ abstract class Base_Template_Factory implements Template_Factory {
 	 * @since  v2.0.0
 	 * @param  \WP_Post $post       A WP_Post to bootstrap a template from.
 	 * @param  array    $defaults   An array of default attributes to pass to the template.
-	 * @return Template   		    A Template
+	 * @return Template             A Template
 	 */
 	public static function wp_post( \WP_Post $post, array $defaults = array() ) : Template {
 		return new Template;
@@ -90,7 +90,7 @@ abstract class Base_Template_Factory implements Template_Factory {
 	 * @since  v2.0.0
 	 * @param  \WP_Term $term       A WP_Term to bootstrap a template from.
 	 * @param  array    $defaults   An array of default attributes to pass to the template.
-	 * @return Template   		    A Template
+	 * @return Template             A Template
 	 */
 	public static function wp_term( \WP_Term $term, array $defaults = array() ) : Template {
 		return new Template;
@@ -103,7 +103,7 @@ abstract class Base_Template_Factory implements Template_Factory {
 	 * @since  v2.0.0
 	 * @param  \WP_User $user       A WP_User to bootstrap a template from.
 	 * @param  array    $defaults   An array of default attributes to pass to the template.
-	 * @return Template   		    A Template
+	 * @return Template             A Template
 	 */
 	public static function wp_user( \WP_User $user, array $defaults = array() ) : Template {
 		return new Template;
@@ -126,7 +126,7 @@ abstract class Base_Template_Factory implements Template_Factory {
 	 * @codeCoverageIgnore
 	 * @since   v2.0.0
 	 * @access  private
-	 * @return  void 	Private no op.
+	 * @return  void    Private no op.
 	 */
 	private function __clone() {}
 }

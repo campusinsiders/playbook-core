@@ -21,7 +21,7 @@ trait String_Utils {
 	 *
 	 * @uses  \DateTime::__construct()
 	 * @since  v2.0.0
-	 * @param  String $string 	A string representation of a date.  Cannot be a timestamp.
+	 * @param  String $string   A string representation of a date.  Cannot be a timestamp.
 	 * @return \DateTime|string A \DateTime object, original string on failure.
 	 */
 	public function to_datetime( string $string = '' ) {
@@ -40,7 +40,7 @@ trait String_Utils {
 	 * Decodes a JSON string into an Object
 	 *
 	 * @since  v2.0.0
-	 * @param  String $string 	A json string hash.
+	 * @param  String $string   A json string hash.
 	 * @return \stdClass|string A PHP stdClass Object, original string on failure.
 	 */
 	public function json_decode( string $string = '' ) {
@@ -67,7 +67,7 @@ trait String_Utils {
 	 * @uses   \maybe_unserialize()
 	 * @link   https://developer.wordpress.org/reference/functions/maybe_unserialize/
 	 * @since  v2.0.0
-	 * @param  String $string 		A serialized string.
+	 * @param  String $string       A serialized string.
 	 * @return mixed  Result of unserialization, original string on failure.
 	 */
 	public function unserialize( string $string = '' ) {

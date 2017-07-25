@@ -33,8 +33,8 @@ trait Featured_Media_Utils {
 		/**
 		 * Filter: playbook\featured_media_type
 		 *
-		 * @param string 	$type 	The type of featured media ( video | image ).
-		 * @param \WP_post 	$post 	WP_Post object.
+		 * @param string    $type   The type of featured media ( video | image ).
+		 * @param \WP_post  $post   WP_Post object.
 		 */
 		return Hooks::apply_filters( 'playbook\featured_media_type', 'image', $post );
 	}
@@ -42,11 +42,11 @@ trait Featured_Media_Utils {
 	/**
 	 * Get Featured Media
 	 *
-	 * @internal  	This will always return media, even if self::has_featured_media
+	 * @internal    This will always return media, even if self::has_featured_media
 	 *              is false.  This way, we never have an empty image src
-	 * @since  		v2.0.0
-	 * @param  		\WP_Post $post WP_Post object.
-	 * @return 		string         The source url of the featured media
+	 * @since       v2.0.0
+	 * @param       \WP_Post $post WP_Post object.
+	 * @return      string         The source url of the featured media
 	 */
 	public static function get_featured_media( \WP_Post $post ) : string {
 		// If we're supposed to deliver a video, get a video.
@@ -62,8 +62,8 @@ trait Featured_Media_Utils {
 		/**
 		 * Filter: playbook\get_featured_media
 		 *
-		 * @param string 	$media 	The url to the featured media.
-		 * @param \WP_post 	$post 	\WP_Post object.
+		 * @param string    $media  The url to the featured media.
+		 * @param \WP_post  $post   \WP_Post object.
 		 */
 		return Hooks::apply_filters( 'playbook\get_featured_media', $media, $post );
 	}

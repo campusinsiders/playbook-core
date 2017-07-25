@@ -66,9 +66,11 @@ final class Factory_Map {
 	 * @return self                                instance
 	 */
 	public function replace_factory( string $reference, Template_Factory $class ) : Factory_Map {
-		$this->factories = array_map( function( $factory ) use ( $reference, $class ) {
-			return ( $reference === $factory->reference ) ? $factory->set( $class ) : $factory;
-		}, $this->factories );
+		$this->factories = array_map(
+			function( $factory ) use ( $reference, $class ) {
+					return ( $reference === $factory->reference ) ? $factory->set( $class ) : $factory;
+			}, $this->factories
+		);
 
 		return $this;
 	}
@@ -81,9 +83,11 @@ final class Factory_Map {
 	 * @return self              instance
 	 */
 	public function remove_factory( string $reference ) {
-		$this->factories = array_filter( $this->factories, function( $factory ) use ( $reference ) {
-			return ( ! ( $reference === $factory->reference ) );
-		});
+		$this->factories = array_filter(
+			$this->factories, function( $factory ) use ( $reference ) {
+				return ( ! ( $reference === $factory->reference ) );
+			}
+		);
 
 		return $this;
 	}
@@ -132,9 +136,11 @@ final class Factory_Map {
 	 * @return array An array of the factory references stored in this Factory_Map
 	 */
 	public function list_refs() {
-		return array_map( function( $factory ) {
-			return $factory->reference;
-		}, $this->factories );
+		return array_map(
+			function( $factory ) {
+					return $factory->reference;
+			}, $this->factories
+		);
 	}
 
 	/**
@@ -144,8 +150,10 @@ final class Factory_Map {
 	 * @return array An array of the factory classes stored in this Factory_Map
 	 */
 	public function list_classes() {
-		return array_map( function( $factory ) {
-			return $factory->class;
-		}, $this->factories );
+		return array_map(
+			function( $factory ) {
+					return $factory->class;
+			}, $this->factories
+		);
 	}
 }

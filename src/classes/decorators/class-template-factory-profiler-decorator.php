@@ -63,7 +63,8 @@ class Template_Factory_Profiler_Decorator {
 	 */
 	public function end() {
 		$this->end = microtime();
-		printf( '<!-- %s rendered in %s ms. -->',
+		printf(
+			'<!-- %s rendered in %s ms. -->',
 			esc_html( get_class( $this->factory ) ),
 			esc_html( ( $this->end - $this->start ) )
 		);
