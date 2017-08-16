@@ -54,9 +54,6 @@ class Playbook {
 		// Add registry hook.
 		$this->add_register_hook();
 
-		// Add rewrite hook.
-		$this->add_rewrite_hook();
-
 		// Inform WordPress that Playbook is ready.
 		do_action( 'playbook_loaded', $this );
 
