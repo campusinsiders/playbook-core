@@ -11,6 +11,7 @@
  */
 
 namespace Lift\Playbook\UI;
+
 use Lift\Playbook\Playbook_Strict_Type_Exception;
 use Lift\Playbook\Interfaces\Attribute;
 
