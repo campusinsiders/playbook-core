@@ -61,7 +61,7 @@ class Object_Attribute extends Base_Attribute implements Attribute {
 	 * @param array  $arguments The arguments.
 	 * @return mixed            The return value of the method on the value, or the parent of $this.
 	 */
-	public function __call( string $method, $arguments ) : Attribute {
+	public function __call( string $method, $arguments ) {
 		if ( method_exists( $this->get(), $method ) ) {
 			return call_user_func_array( array( $this->get(), $method ), $arguments );
 		}
