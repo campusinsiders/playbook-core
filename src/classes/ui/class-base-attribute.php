@@ -221,7 +221,7 @@ class Base_Attribute implements Attribute {
 	 * @param  array  $args    An array of agrument to pass to the filter.
 	 * @return Attribute      A (clone) of $this instance with a new filtered value
 	 */
-	public function __call( string $method, $args ) : Attribute {
+	public function __call( string $method, $args ) {
 		return $this->filter( $method, $args );
 	}
 
